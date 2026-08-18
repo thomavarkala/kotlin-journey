@@ -1,179 +1,210 @@
-# Type Conversion
+# Basic Type Conversions in Kotlin
 
-Kotlin does **not** automatically convert numeric types. You must explicitly convert a value from one type to another.
-
----
-
-## 1. Numeric Conversion
-
-Use functions such as `toInt()`, `toLong()`, `toDouble()`, etc.
-
-```kotlin
-val intValue = 10
-
-val longValue = intValue.toLong()
-val doubleValue = intValue.toDouble()
-val floatValue = intValue.toFloat()
-```
-
-Common conversion functions:
-
-```text
-toByte()
-toShort()
-toInt()
-toLong()
-toFloat()
-toDouble()
-```
+Kotlin does **not** automatically convert numeric types (there is no implicit primitive widening). You must explicitly convert a value from one type to another using conversion functions or properties.
 
 ---
 
-## 2. Integer to Integer
+## 1. Int Conversions
+
+An `Int` can be converted to other numeric types, character code points, or strings.
+
+| To Type | Example |
+|---|---|
+| `Byte` | `100.toByte()` |
+| `Short` | `100.toShort()` |
+| `Long` | `100.toLong()` |
+| `Float` | `100.toFloat()` |
+| `Double` | `100.toDouble()` |
+| `Char` | `65.toChar()` |
+| `String` | `100.toString()` |
+
+Example:
 
 ```kotlin
-val value: Int = 100
+val intValue: Int = 100
 
-val byteValue = value.toByte()
-val shortValue = value.toShort()
-val longValue = value.toLong()
-```
-
-Be careful when converting to a smaller type because the value may overflow.
-
-```kotlin
-val value = 130
-
-val result = value.toByte()
-println(result)
+val longValue: Long = intValue.toLong()
+val doubleValue: Double = intValue.toDouble()
+val charValue: Char = 65.toChar() // 'A'
 ```
 
 ---
 
-## 3. Decimal to Integer
+## 2. Long Conversions
 
-Converting a decimal to an integer removes the fractional part.
+Converting a `Long` to smaller integer types (`Int`, `Short`, `Byte`) may truncate bits if the value is out of bounds.
 
-```kotlin
-val value = 10.75
+| To Type | Example |
+|---|---|
+| `Int` | `100L.toInt()` |
+| `Byte` | `100L.toByte()` |
+| `Short` | `100L.toShort()` |
+| `Float` | `100L.toFloat()` |
+| `Double` | `100L.toDouble()` |
+| `Char` | `66L.toChar()` |
+| `String` | `100L.toString()` |
 
-println(value.toInt()) // 10
-println(value.toLong()) // 10
-```
-
-It does not round the value.
-
-```kotlin
-10.99.toInt() // 10
-```
-
----
-
-## 4. String to Number
-
-Use the appropriate conversion function.
+Example:
 
 ```kotlin
-val age = "25".toInt()
-val number = "100000".toLong()
-val price = "10.5".toDouble()
-```
+val longValue: Long = 2147483648L
 
-Invalid numeric strings cause an exception:
-
-```kotlin
-val age = "abc".toInt()
-// NumberFormatException
-```
-
-Use `toIntOrNull()` when the input may not be a valid number:
-
-```kotlin
-val age = "abc".toIntOrNull()
-
-println(age) // null
+val intValue: Int = longValue.toInt() 
+println(intValue) // -2147483648 (Overflow occurs)
 ```
 
 ---
 
-## 5. Number to String
+## 3. Double Conversions
 
-Use `toString()`.
+Converting a decimal to an integer type truncates the fractional part (it does **not** round).
+
+| To Type | Example |
+|---|---|
+| `Int` | `10.99.toInt()` |
+| `Long` | `10.75.toLong()` |
+| `Float` | `10.55.toFloat()` |
+| `Byte` | `10.5.toByte()` |
+| `Short` | `10.5.toShort()` |
+| `String` | `10.5.toString()` |
+
+Example:
 
 ```kotlin
-val age = 25
+val decimalValue: Double = 10.99
 
-val text = age.toString()
-
-println(text) // "25"
-```
-
-You can also use string templates:
-
-```kotlin
-val age = 25
-
-val text = "$age"
+val intValue: Int = decimalValue.toInt()
+println(intValue) // 10 (Fractional part removed, not rounded)
 ```
 
 ---
 
-## 6. Character Conversion
+## 4. Float Conversions
 
-Convert a `Char` to an integer using `code`.
+Converting a `Float` to integer types truncates the decimal portion.
+
+| To Type | Example |
+|---|---|
+| `Int` | `5.85f.toInt()` |
+| `Long` | `5.85f.toLong()` |
+| `Double` | `5.85f.toDouble()` |
+| `Byte` | `5.85f.toByte()` |
+| `Short` | `5.85f.toShort()` |
+| `String` | `3.14f.toString()` |
+
+---
+
+## 5. Byte Conversions
+
+A `Byte` can be converted to larger numeric types safely, or converted to a character/string.
+
+| To Type | Example |
+|---|---|
+| `Int` | `(100).toByte().toInt()` |
+| `Short` | `(100).toByte().toShort()` |
+| `Long` | `(100).toByte().toLong()` |
+| `Float` | `(10).toByte().toFloat()` |
+| `Double` | `(10).toByte().toDouble()` |
+| `Char` | `(65).toByte().toChar()` |
+| `String` | `(12).toByte().toString()` |
+
+---
+
+## 6. Short Conversions
+
+A `Short` can be converted to other numeric types or UTF-16 characters.
+
+| To Type | Example |
+|---|---|
+| `Int` | `(500).toShort().toInt()` |
+| `Byte` | `(200).toShort().toByte()` |
+| `Long` | `(500).toShort().toLong()` |
+| `Float` | `(500).toShort().toFloat()` |
+| `Double` | `(500).toShort().toDouble()` |
+| `Char` | `(67).toShort().toChar()` |
+| `String` | `(500).toShort().toString()` |
+
+---
+
+## 7. Char Conversions
+
+In modern Kotlin, convert a `Char` to its UTF-16 code point using `.code`, or extract numeric values using digit conversion functions.
+
+| To Type | Example |
+|---|---|
+| `Int` (Code Point) | `'A'.code` |
+| `Int` (Digit) | `'7'.digitToInt()` |
+| `Int` (Radix / Base) | `'F'.digitToInt(16)` |
+| `Int?` (Safe Digit) | `'x'.digitToIntOrNull()` |
+| `Byte` | `'A'.code.toByte()` |
+| `Long` | `'A'.code.toLong()` |
+| `String` | `'A'.toString()` |
+
+Example:
 
 ```kotlin
 val ch = 'A'
-
 println(ch.code) // 65
-```
 
-Convert an integer to a character:
+val digitChar = '9'
+println(digitChar.digitToInt()) // 9
 
-```kotlin
-val ch = 65.toChar()
-
-println(ch) // A
-```
-
----
-
-## 7. Boolean Conversion
-
-There is no general `toBoolean()` conversion for arbitrary values.
-
-For strings:
-
-```kotlin
-val value = "true".toBoolean()
-
-println(value) // true
-```
-
-Invalid strings result in `false`:
-
-```kotlin
-println("hello".toBoolean()) // false
+val invalidDigit = 'x'.digitToIntOrNull()
+println(invalidDigit) // null
 ```
 
 ---
 
-## 8. No Automatic Numeric Conversion
+## 8. String Conversions
 
-Unlike some languages, Kotlin does not automatically convert numeric types.
+Strings can be parsed into numbers, booleans, or characters.
+
+> **Note:** Among basic primitive data types, `String` is unique because it represents a sequence of characters, allowing direct conversion into collections (`List`, `Set`, `CharArray`, etc.), which we will explore in `07-collection-conversions.md`.
+
+| To Type | Example |
+|---|---|
+| `Int` | `"25".toInt()` |
+| `Int?` (Safe) | `"abc".toIntOrNull()` |
+| `Int` (Radix) | `"1010".toInt(2)` |
+| `Long` | `"100000".toLong()` |
+| `Long?` (Safe) | `"abc".toLongOrNull()` |
+| `Double` | `"10.5".toDouble()` |
+| `Double?` (Safe) | `"10.5x".toDoubleOrNull()` |
+| `Float` | `"3.14".toFloat()` |
+| `Float?` (Safe) | `"abc".toFloatOrNull()` |
+| `Boolean` | `"true".toBoolean()` |
+| `Boolean?` (Strict) | `"TRUE".toBooleanStrictOrNull()` |
+| `Char` | `"A".single()` |
+| `CharArray` | `"Hello".toCharArray()` |
+
+Example:
 
 ```kotlin
-val intValue: Int = 10
-val longValue: Long = 20L
+val age = "25".toInt()
 
-// val result = intValue + longValue // Error
+// Avoid exceptions with *OrNull
+val safeAge = "abc".toIntOrNull() // null
+
+// Strict boolean parsing
+val isTrue = "true".toBooleanStrictOrNull() // true
 ```
 
-Convert explicitly:
+---
+
+## 9. Boolean Conversions
+
+Kotlin does not have direct primitive `.toInt()` conversion for `Boolean` values. Use explicit expressions or convert to `String`.
+
+| To Type | Example |
+|---|---|
+| `String` | `true.toString()` |
+| `Int` | `if (true) 1 else 0` |
+
+Example:
 
 ```kotlin
-val result = intValue.toLong() + longValue
+val flag = true
 
-println(result) // 30
+val str = flag.toString() // "true"
+val intVal = if (flag) 1 else 0 // 1
 ```
-
