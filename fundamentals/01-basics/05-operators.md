@@ -102,7 +102,7 @@ println(!hasId)             // false
 
 ### Truth Table
 
-| `A` | `B` | `A && B` | `A || B` |
+| `A` | `B` | `A && B` | `A \|\| B` |
 |---|---|---|---|
 | `true` | `true` | `true` | `true` |
 | `true` | `false` | `false` | `true` |
