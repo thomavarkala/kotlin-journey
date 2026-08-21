@@ -1,6 +1,5 @@
 # IntArray
 
-`IntArray` is a specialized Kotlin array for storing primitive `Int` values. It is commonly used in LeetCode because many problems use `IntArray` as the input type.
 
 ---
 
@@ -164,7 +163,6 @@ b → IntArray
 
 ---
 
-# Useful Functions for LeetCode
 
 ## 8. `sum()`
 
@@ -458,9 +456,247 @@ Returns a `List<Int>`.
 
 ---
 
-# Sorting
 
-## 24. `sort()`
+## 24. `filterIndexed()`
+
+Filter elements using both the index and value.
+
+```kotlin
+val nums = intArrayOf(10, 20, 30, 40, 50)
+
+val result = nums.filterIndexed { index, value ->
+    index % 2 == 0
+}
+
+println(result) // [10, 30, 50]
+```
+
+`filterIndexed()` returns a `List<Int>`.
+
+Convert back to `IntArray` if needed:
+
+```kotlin
+val result = nums
+    .filterIndexed { index, _ -> index % 2 == 0 }
+    .toIntArray()
+```
+
+---
+
+## 25. `filterNotIndexed()`
+
+Keep elements for which the indexed condition is false.
+
+```kotlin
+val nums = intArrayOf(10, 20, 30, 40)
+
+val result = nums.filterNotIndexed { index, _ ->
+    index % 2 == 0
+}
+
+println(result) // [20, 40]
+```
+
+Returns a `List<Int>`.
+
+---
+
+## 26. `mapIndexed()`
+
+Transform elements using both index and value.
+
+```kotlin
+val nums = intArrayOf(10, 20, 30)
+
+val result = nums.mapIndexed { index, value ->
+    value + index
+}
+
+println(result) // [10, 21, 32]
+```
+
+Returns a `List<Int>`.
+
+---
+
+## 27. `mapIndexedNotNull()`
+
+Transform elements using the index and remove `null` results.
+
+```kotlin
+val nums = intArrayOf(10, 20, 30, 40)
+
+val result = nums.mapIndexedNotNull { index, value ->
+    if (index % 2 == 0) value * 2 else null
+}
+
+println(result) // [20, 60]
+```
+
+Returns a `List<Int>`.
+
+---
+
+## 28. `onEach()`
+
+Performs an action on every element and returns the original array.
+
+```kotlin
+val nums = intArrayOf(10, 20, 30)
+
+nums.onEach {
+    println(it)
+}
+```
+
+It is mainly useful for side effects such as logging or debugging.
+
+---
+
+## 29. `fold()`
+
+Accumulates values from left to right.
+
+```kotlin
+val nums = intArrayOf(1, 2, 3, 4)
+
+val result = nums.fold(0) { total, value ->
+    total + value
+}
+
+println(result) // 10
+```
+
+---
+
+## 30. `reduce()`
+
+Accumulates values from left to right using the first element as the initial value.
+
+```kotlin
+val nums = intArrayOf(1, 2, 3, 4)
+
+val result = nums.reduce { total, value ->
+    total + value
+}
+
+println(result) // 10
+```
+
+Unlike `fold()`, `reduce()` does not require an initial value.
+
+---
+
+## 31. `zip()`
+
+Combines two arrays element by element.
+
+```kotlin
+val a = intArrayOf(1, 2, 3)
+val b = intArrayOf(10, 20, 30)
+
+val result = a.zip(b) { x, y ->
+    x + y
+}
+
+println(result) // [11, 22, 33]
+```
+
+Returns a `List<Int>`.
+
+---
+
+## 32. `partition()`
+
+Splits the array into two lists based on a condition.
+
+```kotlin
+val nums = intArrayOf(1, 2, 3, 4, 5)
+
+val (even, odd) = nums.partition {
+    it % 2 == 0
+}
+
+println(even) // [2, 4]
+println(odd)  // [1, 3, 5]
+```
+
+---
+
+## 33. `take()`
+
+Returns the first `n` elements.
+
+```kotlin
+val nums = intArrayOf(10, 20, 30, 40)
+
+val result = nums.take(2)
+
+println(result) // [10, 20]
+```
+
+Returns a `List<Int>`.
+
+---
+
+## 34. `takeLast()`
+
+Returns the last `n` elements.
+
+```kotlin
+val nums = intArrayOf(10, 20, 30, 40)
+
+val result = nums.takeLast(2)
+
+println(result) // [30, 40]
+```
+
+---
+
+## 35. `drop()`
+
+Skips the first `n` elements.
+
+```kotlin
+val nums = intArrayOf(10, 20, 30, 40)
+
+val result = nums.drop(2)
+
+println(result) // [30, 40]
+```
+
+---
+
+## 36. `dropLast()`
+
+Skips the last `n` elements.
+
+```kotlin
+val nums = intArrayOf(10, 20, 30, 40)
+
+val result = nums.dropLast(2)
+
+println(result) // [10, 20]
+```
+
+---
+
+## 37. `subArray`
+
+There is no `subArray()` function on `IntArray`. Use `copyOfRange()` to extract a range.
+
+```kotlin
+val nums = intArrayOf(10, 20, 30, 40, 50)
+
+val result = nums.copyOfRange(1, 4)
+
+println(result.contentToString()) // [20, 30, 40]
+```
+
+The end index is exclusive.
+
+# Sorting
+## 38. `sort()`
 
 Sorts the `IntArray` in ascending order.
 
@@ -482,7 +718,7 @@ Output:
 
 ---
 
-## 25. `sortDescending()`
+## 39. `sortDescending()`
 
 Returns a descending sorted list.
 
@@ -496,7 +732,7 @@ println(result) // [8, 5, 2, 1]
 
 ---
 
-## 26. `sorted()`
+## 40. `sorted()`
 
 Returns a sorted `List<Int>` without modifying the original array.
 
@@ -512,7 +748,7 @@ println(result) // [1, 2, 5, 8]
 
 # Reversing
 
-## 27. `reverse()`
+## 41. `reverse()`
 
 Reverses the original array.
 
@@ -532,7 +768,7 @@ Output:
 
 ---
 
-## 28. `reversed()`
+## 42. `reversed()`
 
 Returns a reversed `List<Int>` without modifying the original array.
 
@@ -548,7 +784,7 @@ println(result) // [3, 2, 1]
 
 # Iteration
 
-## 29. `forEach`
+## 43. `forEach`
 
 ```kotlin
 val nums = intArrayOf(10, 20, 30)
@@ -560,7 +796,7 @@ nums.forEach {
 
 ---
 
-## 30. `forEachIndexed`
+## 44. `forEachIndexed`
 
 Useful when both index and value are required.
 
@@ -574,7 +810,7 @@ nums.forEachIndexed { index, value ->
 
 ---
 
-## 31. `withIndex()`
+## 45. `withIndex()`
 
 Another way to access index and value:
 
@@ -588,7 +824,7 @@ for ((index, value) in nums.withIndex()) {
 
 # Useful Conversions
 
-## 32. `toList()`
+## 46. `toList()`
 
 ```kotlin
 val nums = intArrayOf(1, 2, 3)
@@ -598,7 +834,7 @@ val list = nums.toList()
 
 ---
 
-## 33. `toMutableList()`
+## 47. `toMutableList()`
 
 ```kotlin
 val nums = intArrayOf(1, 2, 3)
@@ -610,7 +846,7 @@ list.add(4)
 
 ---
 
-## 34. `toIntArray()`
+## 48. `toIntArray()`
 
 Convert a collection back to `IntArray`.
 
@@ -632,7 +868,7 @@ val result = nums
 
 # Array Utilities
 
-## 35. `contentToString()`
+## 49. `contentToString()`
 
 Use this to print the contents of an `IntArray`.
 
@@ -650,7 +886,7 @@ Output:
 
 ---
 
-## 36. `contentEquals()`
+## 50. `contentEquals()`
 
 Compare two arrays by their contents.
 
@@ -663,7 +899,7 @@ a.contentEquals(b) // true
 
 ---
 
-## 37. `copyOf()`
+## 51. `copyOf()`
 
 Create a copy of an array.
 
@@ -689,7 +925,7 @@ Output:
 
 ---
 
-## 38. `copyOfRange()`
+## 52. `copyOfRange()`
 
 Copy a specific range.
 
@@ -709,109 +945,3 @@ Output:
 
 The end index is **exclusive**.
 
----
-
-# Common LeetCode Patterns
-
-## Sum
-
-```kotlin
-val sum = nums.sum()
-```
-
-## Maximum
-
-```kotlin
-val max = nums.max()
-```
-
-## Minimum
-
-```kotlin
-val min = nums.min()
-```
-
-## Count Matching Elements
-
-```kotlin
-val count = nums.count { it > 0 }
-```
-
-## Check Existence
-
-```kotlin
-if (target in nums) {
-    // found
-}
-```
-
-## Find Index
-
-```kotlin
-val index = nums.indexOf(target)
-```
-
-## Count a Specific Value
-
-```kotlin
-val count = nums.count { it == target }
-```
-
-## Count Even / Odd
-
-```kotlin
-val even = nums.count { it % 2 == 0 }
-val odd = nums.count { it % 2 != 0 }
-```
-
-## Check All
-
-```kotlin
-nums.all { it > 0 }
-```
-
-## Check Any
-
-```kotlin
-nums.any { it < 0 }
-```
-
-## Transform
-
-```kotlin
-val result = nums.map { it * 2 }
-```
-
-## Filter
-
-```kotlin
-val result = nums.filter { it > 0 }
-```
-
-## Sort
-
-```kotlin
-nums.sort()
-```
-
-## Reverse
-
-```kotlin
-nums.reverse()
-```
-
-## Loop Through Indexes
-
-```kotlin
-for (i in nums.indices) {
-    println(nums[i])
-}
-```
-
-## Reverse Loop
-
-```kotlin
-for (i in nums.lastIndex downTo 0) {
-    println(nums[i])
-}
-```
